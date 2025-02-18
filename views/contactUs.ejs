@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <link href="/styles/tailwind.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="font-poppins bg-gray-100 text-gray-800">
+   <%- include('header') %>
+    <main class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Contact Us</h1>
+        <form action="/submit" method="POST" class="space-y-6">
+            <div>
+                <label for="name" class="block text-lg font-medium text-gray-700">Name</label>
+                <input readonly value="Sahibjit Singh" type="text" id="name" name="name" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Your Name">
+            </div>
+            <div>
+                <label for="email" class="block text-lg font-medium text-gray-700">Email</label>
+                <input type="email" readonly value="sahibjitsinghramgharia@gmail.com" id="email" name="email" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="you@example.com">
+            </div>
+            <div>
+                <label for="message" class="block text-lg font-medium text-gray-700">Message</label>
+                <textarea id="message" readonly value="You can't write anything" name="message" rows="4" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="You can mail me I can grow your work! :D"></textarea>
+            </div>
+            <div>
+                <button type="submit" class="w-full bg-blue-600 text-white font-semibold p-3 rounded-md shadow-sm hover:bg-blue-700 transition duration-300">Send Message</button>
+            </div>
+        </form>
+        
+
+    </main>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="/styles/tailwind.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  </head>
+  <body>
+  <%- include('header') %>
+<div class="text-center text-gray-800 font-sans">
+  
+  <h1 class="text-5xl font-bold mt-6">Welcome to the planet of jokes!</h1>
+  <p class="text-xl mt-4 text-gray-950 ">After the end of samay raina's india's got latent, we have his stolen joke diary and you can read his jokes by selecting the genre for the jokes</p>
+</div>
+
+<div class="img-container flex items-center justify-center p-4 bg-gray-100 rounded-lg shadow-lg">
+  <img class="w-24 h-24 rounded-full border-2 border-gray-300" src="https://m.media-amazon.com/images/M/MV5BNDc1NWQ3NmQtNDRiYi00ZWEwLWEwMjktNDVmNjkzZmVmZmRkXkEyXkFqcGc@._V1_.jpg" alt="latent show icon">
+  <span class="material-icons text-3xl text-gray-700 ml-4">Latent</span>
+</div>
+
+
+
+ <main >
+  <div class="  p-4   bg-gray-900 text-white flex justify-between border border-blue-300 rounded-lg mt-5">
+    <div class="first  w-1/2">
+      this is the first one
+
+      <div class="form-container  ">
+        <form action="/submit" method="post">
+        <div class="form-group grid grid-cols-2 items-center">
+          <label for="category">Select <span class="text-violet-800"> category / categories</span> : </label>
+          <div class="input-container flex gap-1 flex-col border p-2 rounded-lg border-white  ">
+            <div class="any">
+              <input type="radio" onclick="handleRadioChange()"  name="any" id="any"><label for="category"> Any</label>
+            </div>
+            <div class="custom">
+              <input type="radio" onclick="handleRadioChange()"  name="any" id="custom"><label for="category"> Custom:</label>
+              <input type="checkbox" name="genre" id="" value="Programming"><label for="programming"> Programming</label>
+              <input type="checkbox" name="genre" id="" value="Miscellaneous"><label for="programming"> Misc</label>
+              <input type="checkbox" name="genre" id="" value="Dark"><label for="programming"> Dark</label>
+              <input type="checkbox" name="genre" id="" value="Pun"><label for="programming"> Pun</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group grid grid-cols-2 items-center justify-center mt-4">
+          <label for="Language">Select <span class="text-violet-800">Language</span> :</label>
+          <div class="input-container border border-white p-2 rounded-lg">
+            <select name="language" id="language" class="text-black rounded-lg ">
+              <option value="">en-English</option>
+              <option value="de">de-German</option>
+              <option value="cs">cs-Czech</option>
+              <option value="fr">fr-French</option>
+              <option value="es">es-Spanish</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group grid grid-cols-2 items-center justify-center mt-4">
+          <label for="flags">Select <span class="text-violet-800">flags</span> to blacklist :</label>
+          <div class="input-container border border-white p-2 rounded-lg">
+           <label for="optional">(Optional) </label>
+            <input type="checkbox" name="blacklist" value="nsfw" id="notSafe"><label for="nsfw"> nsfw</label>
+            <input type="checkbox" name="blacklist" value="religious"  id="religious"><label for="nsfw"> religious</label>
+            <input type="checkbox" name="blacklist"  value="political" id="political"><label for="political"> political</label>
+            <input type="checkbox" name="blacklist"  value="racist" id="racist"><label for="nsfw"> racist</label>
+            <input type="checkbox" name="blacklist"  value="sexist" id="sexist"><label for="nsfw"> sexist</label>
+            <input type="checkbox" name="blacklist"  value="explicit" id="explicit"><label for="nsfw"> explicit</label>
+          </div>
+        </div>
+        <div>
+         
+          <button class="bg-white text-black p-2 rounded-lg hover:font-bold transition-all duration-300 ease-in-out transform hover:bg-red-100 hover:scale-110" type="submit">Blast it</button>
+        </div>
+        </form>
+      </div>
+
+
+    </div>
+    <div class="second border w-2/3 ml-3 rounded-lg shadow-lg bg-white">
+      <p class="text-gray-700 font-semibold p-2 border-b border-gray-200">This is the second one</p>
+      <div class="p-4 ">
+          <% if (!locals.content) { %>
+              <h1 class="text-gray-700 text-5xl animate-bounce">Your Selected Jokes Will be appear here</h1>
+          <% } else { %>
+              <h1 class="text-3xl text-green-800 font-bold text-center"><%= setup %></h1>
+              <h1 class="text-2xl text-amber-900 mt-4 text-center"><%= delivery %></h1>
+              <h1 class="text-xl text-blue-600 mt-4 text-center"><%= joke %></h1>
+          <% } %>
+      </div>
+  </div>
+  
+  </div>
+ 
+ </main>
+
+
+<script>
+  
+  const anyBtn = document.getElementById("any")
+  document.addEventListener("DOMContentLoaded",()=>{
+    anyBtn.checked = true
+    handleRadioChange()
+  })
+
+  function handleRadioChange(){  
+  const customBtn = document.getElementById("custom")
+  const checkBoxes = document.querySelectorAll("input[name='genre']")
+  
+  if(anyBtn.checked){
+    checkBoxes.forEach(checkBox =>{
+      checkBox.disabled = true
+      checkBox.checked = false
+    })
+  }
+  else if(customBtn.checked){
+    checkBoxes.forEach(checkBox=>{
+      checkBox.disabled = false
+    })
+  }
+  }
+  
+
+</script>
+  </body>
+</html>
