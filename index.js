@@ -121,7 +121,8 @@ app.get("/addNotes", async (req, res) => {
         image: await getImage(),
         books: books.length > 0 ? books : false,
         success: req.query.success ? req.query.success : false,
-        error: req.query.error ? req.query.error : false
+        error: req.query.error ? req.query.error : false,
+        notes:await getNotesByUserId(currentUserId)
 
     })
 
@@ -195,7 +196,8 @@ app.get("/editUser", async (req, res) => {
     const allUsers = await getAllUsers()
     res.render("editUser.ejs", {
         image: await getImage(),
-        users: allUsers
+        users: allUsers,
+        notes: await getNotesByUserId(currentUserId)
     })
 })
 app.post("/editUser", upload.single('imageInput'), async (req, res) => {
