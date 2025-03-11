@@ -1,0 +1,51 @@
+    <!-- Sidebar-->
+    <div id="sidebar" class="bg-lightGray transform lg:-translate-x-0 -translate-x-full p-8 fixed top-0 bottom-0 w-28   transition-all duration-200 lg:block ">
+        <ul
+          class="flex flex-col mt-20 gap-9 justify-between items-center w-12 h-96 md:mt-20"
+        >
+          <li class="w-8 flex items-center justify-center h-2">
+            <a href="/">
+            <span
+              class="material-symbols-outlined text-5xl cursor-pointer hover:bg-hoverBg transition-all duration-200 hover:rounded-3xl hover:p-2 hover:text-stone-100"
+            >
+              notes
+            </span>
+          </a>
+          </li>
+          <li class="w-8 flex items-center justify-center h-2">
+            <a href="/addUser">
+            <span
+              class="material-symbols-outlined text-5xl cursor-pointer hover:bg-hoverBg transition-all duration-200 hover:rounded-3xl hover:p-2 hover:text-stone-100"
+            >
+              add
+            </span>
+          </a>
+          </li>
+          <li class="w-8 flex items-center justify-center h-2">
+            <a href="/editUser">
+            <span
+              class="material-symbols-outlined text-5xl cursor-pointer hover:bg-hoverBg transition-all duration-200 hover:rounded-3xl hover:p-2 hover:text-stone-100"
+            >
+              settings
+            </span>
+          </a>
+          </li>
+          <li class="w-8 flex items-center justify-center h-2">
+            <a href="/addNotes">
+            <span
+              class="material-symbols-outlined text-5xl cursor-pointer hover:bg-hoverBg transition-all duration-200 hover:rounded-3xl hover:p-2 hover:text-stone-100"
+            >
+              add_notes
+            </span>
+          </a>
+          </li>
+        </ul>
+      </div>
+
+      <script>
+
+        const sidebar = document.getElementById("sidebar")    
+        function showSideBar(){
+          sidebar.classList.toggle("-translate-x-full")
+        }
+      </script>
