@@ -57,9 +57,24 @@
             <div>
                 <h3 class="text-gray-500 lg:text-2xl text-xl">(See <span class="text-violet-600 underline cursor-pointer">my list of <%=notes.length%>+ books</span>, for more.)</h3>
             </div>
-            <div class="">
-                <h1 class="text-orange text-4xl font-bold">My Notes</h1>
-                <p class="text-stone-50 text-2xl leading-loose"><%=note.notes_text%></p>
+            <div class="relative"> 
+              <button id="editPencil" class=" absolute right-0 cursor-pointer hover:bg-hoverBg p-1 rounded-lg active:bg-yellow-800 transition-all duration-200">
+                <span class="material-symbols-outlined text-white lg:text-4xl " >
+             edit
+             </span></button>
+              <form action="/editNotes" method="post">
+                <button id="saveIcon" type="submit"  class="hidden absolute right-28 cursor-pointer hover:bg-hoverBg p-1 rounded-lg active:bg-yellow-800 transition-all duration-200">
+                  <span class=" material-symbols-outlined  text-white lg:text-4xl ">
+                    save
+                  </span></button>
+                  
+                  <h1 class="text-orange text-4xl font-bold">My Notes</h1>
+                  <input type="hidden" name="bookId" value="<%=note.id%>" >
+                <div id="textAreaDiv" class=" rounded mt-4">
+                  <textarea name="updatedNote" id="textArea" class="text-stone-50 text-2xl leading-loose bg-bodyBg w-full outline-none" readonly><%=note.notes_text%></textarea>
+                </div>
+              </form>
+                
             </div>
         </div>
     </div>
@@ -87,6 +102,25 @@
         <%}%>
     </div>
   </div>
+  <script>
+    function adjustTextAreaHeight(element){
+      element.style.height = 'auto'
+      element.style.height = element.scrollHeight + 'px'
+    }
+    const textArea  = document.getElementById("textArea")
+    adjustTextAreaHeight(textArea)
+    textArea.addEventListener("input",()=>adjustTextAreaHeight(textArea))
 
+    const saveIcon = document.getElementById("saveIcon")
+    const editPencil = document.getElementById("editPencil")
+    const textAreaDiv = document.getElementById("textAreaDiv")
+    editPencil.addEventListener("click",()=>{
+      textArea.removeAttribute("readonly")
+      textAreaDiv.classList.add("border","border-l-0")
+      saveIcon.classList.remove("hidden")
+    })
+
+
+    </script>
   </body>
 </html>

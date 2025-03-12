@@ -96,6 +96,7 @@ app.post("/addUser", upload.single('imageInput'), async (req, res) => {
 
 app.get("/notes/:id", async (req, res) => {
     try {
+        console.log("This should be a bookId ID -> ",req.params.id)
         const bookId = req.params.id
         const note = await getNoteByBookId(currentUserId, bookId)
         const notes = (await getNotesByUserId(currentUserId))
@@ -250,6 +251,24 @@ app.post("/deleteUser", async (req, res) => {
     }
 })
 
+app.post("/editNotes", async(req,res)=>{
+    try {
+        const bookId = req.body.bookId
+        const updatedNote = req.body.updatedNote
+        console.log(bookId)
+        if(updatedNote!= ""){
+            await updateNote(bookId,updatedNote)
+            console.log("Notes are updated successfully!")
+ 
+        }
+        else{
+            throw new Error("Can't submit an empty note")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+    res.redirect(`/notes/${req.body.bookId}`)
+})
 
 async function addUserData(userId, imgData) {
     try {
@@ -335,7 +354,6 @@ async function insertNotes(notes, rating, userId, book_id) {
 async function getNotesByUserId(currentUserId,query) {
     try {
         let userQuery = query ? query:"notes.user_id"
-        console.log(userQuery)
         let pgQuery = `SELECT notes.user_id, google_bookid, book_id, title, notes_text, created_at, rating, ISBN FROM  NOTES INNER JOIN book ON notes.book_id = book.id WHERE notes.user_id = $1 `
         if(userQuery.toLowerCase()=="best"){
             pgQuery += 'AND RATING > 3 '
@@ -351,9 +369,17 @@ async function getNotesByUserId(currentUserId,query) {
 
 async function getNoteByBookId(currentUserId, bookId) {
     try {
-        const result = await db.query('SELECT name, google_bookId, title, ISBN, created_at, rating, notes_text FROM notes INNER JOIN "USER" ON notes.user_id = "USER".id INNER JOIN book ON notes.book_id = book.id WHERE "USER".id = $1 AND book.id = $2', [currentUserId, bookId]);
+        const result = await db.query('SELECT book.id, name, google_bookId, title, ISBN, created_at, rating, notes_text FROM notes INNER JOIN "USER" ON notes.user_id = "USER".id INNER JOIN book ON notes.book_id = book.id WHERE "USER".id = $1 AND book.id = $2', [currentUserId, bookId]);
         
         return result.rows[0]
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function updateNote(bookId,updatedNote){
+    try {
+        await db.query("UPDATE notes SET notes_text = $1 WHERE book_id = $2",[updatedNote,bookId])
     } catch (error) {
         console.log(error)
     }
