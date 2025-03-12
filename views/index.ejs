@@ -14,6 +14,8 @@
       rel="stylesheet"
     />
     <link href="./output.css" rel="stylesheet" />
+    <link rel="icon" href="/images/favicon.png">
+    <title>Home</title>
   </head>
   <body class="bg-bodyBg">
     <!-- Add User Page -->
@@ -56,9 +58,9 @@
             <div class="p-4">
                 <div class="flex gap-4 bg-lightGray items-center mt-4 rounded-2xl   px-4 py-2">
                     <h3 class="font-bold">Sort By</h3>
-                    <button class="bg-white hover:scale-110 active:opacity-50 transition-all duration-200 lg:text-xl rounded-3xl font-semibold p-5">Title</button>
-                    <button class="bg-white hover:scale-110 active:opacity-50 transition-all duration-200 lg:text-xl rounded-3xl font-semibold p-5">Newest</button>
-                    <button class="bg-white hover:scale-110 active:opacity-50 transition-all duration-200 lg:text-xl rounded-3xl font-semibold p-5">Best</button>
+                    <a href="/?filter=title"> <button class="bg-white hover:scale-110 active:opacity-50 transition-all duration-200 lg:text-xl rounded-3xl font-semibold p-5">Title</button></a>
+                    <a href="/?filter=created_at DESC"><button class="bg-white hover:scale-110 active:opacity-50 transition-all duration-200 lg:text-xl rounded-3xl font-semibold p-5">Newest</button></a>
+                   <a href="/?filter=best"> <button class="bg-white hover:scale-110 active:opacity-50 transition-all duration-200 lg:text-xl rounded-3xl font-semibold p-5">Best</button></a>
                 </div>
                 
             </div>
@@ -68,7 +70,7 @@
             <div class="max-w-[90%] flex gap-8 items-center lg:justify-start justify-center p-4">
                 <img src="https://books.google.com/books/content?id=<%=note.google_bookid%>&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api" class="w-32 rounded-lg" alt="name book using ejs( really helpful dude)">
                 <div class="flex flex-col gap-3 justify-center ">
-                    <a href="/notes/<%=note.book_id%>" class=" font-semibold lg:text-4xl text-xl underline cursor-pointer text-violet-600"><%=note.title%></a>
+                    <h1><a href="/notes/<%=note.book_id%>" class=" font-semibold lg:text-4xl text-xl underline cursor-pointer text-violet-600"><%=note.title%></a></h1>
                     <% 
                       const formattedDate = new Date(note.created_at).toLocaleDateString('en-Uk', { 
                         day: '2-digit' ,
@@ -79,7 +81,7 @@
 <h4 class="lg:text-xl text-gray-500 font-bold">Date Notes: <%= formattedDate %></h4>
 
                     <h4 class="lg:text-xl text-gray-500 font-bold">How strongly I recommend it: <%=note.rating%>/10</h4>
-                    <h4 class="lg:text-xl text-white font-bold"><span class="text-violet-600 underline">Read my notes</span>, or go to the <span class="text-violet-600 underline"><a href="https://www.amazon.in/s?k=<%=note.isbn%>">Amazon page</a></span> for details and reviews</h4>
+                    <h4 class="lg:text-xl text-white font-bold"><span class="text-violet-600 underline"><a href="/notes/<%=note.book_id%>">Read my notes</a></span>, or go to the <span class="text-violet-600 underline"><a href="https://www.amazon.in/s?k=<%=note.isbn%>">Amazon page</a></span> for details and reviews</h4>
                 </div>
               </div>
               <% }) %>

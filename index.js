@@ -1,5 +1,5 @@
 import axios, { all } from "axios"
-import express, { response } from "express"
+import express, { query, response } from "express"
 import bodyParser from "body-parser"
 import multer from "multer"
 import pg from "pg"
@@ -40,9 +40,11 @@ try {
 }
 console.log("This is the first user id", currentUserId)
 app.get("/", async (req, res) => {
+    console.log(req.query)
     try {
-        const notes = await getNotesByUserId(currentUserId)
-        console.log(notes)
+        const query = req.query.filter
+
+        const notes = await getNotesByUserId(currentUserId,query)
         const allUsers = await getAllUsers()
         const image = await getImage()
         res.render("index.ejs", {
@@ -95,10 +97,8 @@ app.post("/addUser", upload.single('imageInput'), async (req, res) => {
 app.get("/notes/:id", async (req, res) => {
     try {
         const bookId = req.params.id
-        console.log(req.params)
         const note = await getNoteByBookId(currentUserId, bookId)
         const notes = (await getNotesByUserId(currentUserId))
-        console.log(note)
         res.render("myNotes.ejs", {
             image: await getImage(),
             note:note,
@@ -132,7 +132,7 @@ app.get('/fetchBooks', async (req, res) => {
     console.log(req.query)
     if (req.query.book) {
         const bookName = req.query.book.replace(/ /g, '+').toLowerCase()
-        console.log(bookName)
+
 
         try {
             const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${bookName}`)
@@ -201,51 +201,42 @@ app.get("/editUser", async (req, res) => {
     })
 })
 app.post("/editUser", upload.single('imageInput'), async (req, res) => {
-    if (req.body.userId && req.file) {
-        const userId = req.body.userId
-        console.log(req.body)
-        const imgData = await sharp(req.file.buffer)
-            .resize({ width: 200, height: 200 })
-            .jpeg({ quality: 60 })
-            .toBuffer()
-        try {
-            if (userId && imgData) {
-                await updateImg(userId, imgData)
-            }
-            else {
-                throw new Error("Image or name wasn't sent");
-
-            }
-            res.redirect("/editUser")
-        } catch (error) {
-            console.log(error)
+    try {
+        if (req.body.userId && req.file) {
+            const userId = req.body.userId;
+            console.log(req.body);
+            const imgData = await sharp(req.file.buffer)
+                .resize({ width: 200, height: 200 })
+                .jpeg({ quality: 60 })
+                .toBuffer();
+            
+            await updateImg(userId, imgData);
+            return res.redirect("/editUser");
         }
-    }
-    else {
+        
         if (req.body) {
-            const allUsers = await getAllUsers()
-            const userId = req.body.userId
-            const user = allUsers.find((user) => user.id == userId)
-            console.log(user.name)
-            const newName = req.body.newName
+            const allUsers = await getAllUsers();
+            const userId = req.body.userId;
+            const user = allUsers.find((user) => user.id == userId);
+            console.log(user.name);
+            const newName = req.body.newName;
 
             if (newName != user.name && newName != "") {
-                try {
-                    await updateName(userId, newName)
-                } catch (error) {
-                    console.log(error)
-                }
-                res.redirect("/editUser")
-            }
-            else {
-                console.log("Same User Id!")
-                res.redirect("/editUser")
+                await updateName(userId, newName);
+                return res.redirect("/editUser")
+            } else {
+                console.log("Same User Id!");
+                return res.redirect("/editUser");
             }
         }
-    }
-    res.redirect("/editUser")
 
-})
+        throw new Error("Image or name wasn't sent");
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('An error occurred');
+    }
+});
+
 
 app.post("/deleteUser", async (req, res) => {
     const userId = req.body.userId
@@ -341,9 +332,16 @@ async function insertNotes(notes, rating, userId, book_id) {
     }
 }
 
-async function getNotesByUserId(currentUserId) {
+async function getNotesByUserId(currentUserId,query) {
     try {
-        const result = await db.query("SELECT notes.user_id, google_bookid, book_id, title, notes_text, created_at, rating, ISBN FROM  NOTES INNER JOIN book ON notes.book_id = book.id WHERE notes.user_id= $1", [currentUserId])
+        let userQuery = query ? query:"notes.user_id"
+        console.log(userQuery)
+        let pgQuery = `SELECT notes.user_id, google_bookid, book_id, title, notes_text, created_at, rating, ISBN FROM  NOTES INNER JOIN book ON notes.book_id = book.id WHERE notes.user_id = $1 `
+        if(userQuery.toLowerCase()=="best"){
+            pgQuery += 'AND RATING > 3 '
+            userQuery = "notes.user_id"
+        }
+        const result = await db.query(pgQuery+`ORDER BY ${userQuery}`, [currentUserId])
         return result.rows
     } catch (error) {
         console.log("Error", error)
