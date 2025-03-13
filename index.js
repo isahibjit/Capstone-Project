@@ -69,7 +69,8 @@ app.get("/addUser", async (req, res) => {
 
     const image = await getImage()
     res.render("addUser.ejs", {
-        image: image
+        image: image,
+        notes:await getNotesByUserId(currentUserId)
     })
 })
 app.post("/addUser", upload.single('imageInput'), async (req, res) => {

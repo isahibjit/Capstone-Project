@@ -48,28 +48,27 @@
 </div>
     </div>
    
+   
     <div class=" lg:border lg:border-y-0 lg:border-r-0 lg:border-gray-600 lg:mt-24 mt-8  md:px-8 ">
       <div class="card md:w-96 w-[100%]  bg-lightGray p-8 rounded-xl flex flex-col gap-4 ">
         <h2 class="font-bold text-3xl leading-loose">Book Notes Library</h2>
         <p class="text-gray-800 text-xl">Summarize Your Favorite Books Here</p>
         <button class="rounded-2xl text-xl font-bold bg-white py-2 ">Create</button>
       </div>
+      <%const topRatedBooks = notes.filter((note)=> note.rating > 3) ;
+      if (topRatedBooks.length > 0) {  %>
+      
       <h2 class=" text-2xl font-bold text-white my-5">Top Rated</h2>
-      <div class="card  bg-lightGray p-3 max-w-96 rounded-lg my-3">
+      <% topRatedBooks.forEach(note => { %>
+      <div class="card flex justify-center   bg-lightGray p-3 max-w-96 rounded-lg my-3">
         <div class="flex justify-evenly items-center">
-          <img src="images/bookImg.png" alt="" class="w-12 h-12 object-cover rounded-full ">
-          <h3 class="text-2xl font-bold">Atomic Habits</h3></div>
+          <img src="https://books.google.com/books/content?id=<%=note.google_bookid%>&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api" alt="" class="w-12 h-12 object-cover rounded-full ">
+          <h3 class="text-2xl font-bold"><%=note.title%></h3></div>
       </div>
-      <div class="card  bg-lightGray p-3 max-w-96 rounded-lg my-3">
-        <div class="flex justify-evenly items-center">
-          <img src="images/bookImg.png" alt="" class="w-12 h-12 object-cover rounded-full ">
-          <h3 class="text-2xl font-bold">Atomic Habits</h3></div>
-      </div>
-      <div class="card  bg-lightGray p-3 max-w-96 rounded-lg my-3">
-        <div class="flex justify-evenly items-center">
-          <img src="images/bookImg.png" alt="" class="w-12 h-12 object-cover rounded-full ">
-          <h3 class="text-2xl font-bold">Atomic Habits</h3></div>
-      </div>
+      <% }) %>
+      <%} else {%> 
+        <h3 class="text-2xl font-bold text-white mt-3">No Top Rated Books</h3></div>
+        <%}%>
     </div>
   </div>
 <script>
